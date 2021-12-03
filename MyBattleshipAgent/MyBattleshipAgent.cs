@@ -25,7 +25,7 @@ namespace Battleship
 
         public override string GetNickname()
         {
-            return "Ron Weasly";
+            return "Andrew's Bot";
         }
 
         public override void SetOpponent(string opponent)
