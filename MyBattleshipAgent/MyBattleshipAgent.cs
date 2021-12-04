@@ -6,11 +6,20 @@ namespace Battleship
     {
         char[,] attackHistory;
         GridSquare attackGrid;
+        Random rng;
 
         public SuperCoolAgent()
         {
             attackHistory = new char[10, 10];
+            for (int i = 0; i < attackHistory.GetLength(0); i++)
+            {
+                for (int j = 0; j < attackHistory.GetLength(1); j++)
+                {
+                    attackHistory[i, j] = 'U'; //u - unknown
+                }
+            }
             attackGrid = new GridSquare();
+            rng = new Random();
         }
 
         public override void Initialize()
@@ -42,13 +51,20 @@ namespace Battleship
 
         public override void DamageReport(char report)
         {
-            attackHistory[attackGrid.x, attackGrid.y] = report;
+            if (report == '\0')
+            {
+                attackHistory[attackGrid.x, attackGrid.y] = 'M';
+            } else 
+            {
+                attackHistory[attackGrid.x, attackGrid.y] = report;
+            }
         }
 
         public override BattleshipFleet PositionFleet()
         {
             BattleshipFleet myFleet = new BattleshipFleet();
-
+            char[,] fleetPlacement = CreateFleetPlacement();
+            
             myFleet.Carrier = new ShipPosition(0, 0, ShipRotation.Vertical);
             myFleet.Battleship = new ShipPosition(1, 0, ShipRotation.Vertical);
             myFleet.Destroyer = new ShipPosition(2, 0, ShipRotation.Vertical);
@@ -56,6 +72,93 @@ namespace Battleship
             myFleet.PatrolBoat = new ShipPosition(4, 0, ShipRotation.Horizontal);
 
             return myFleet;
+        }
+
+        private char[,] CreateFleetPlacement()
+        {
+ 
+            char[,] fleetPlacement = new char[10, 10];
+            for (int i = 0; i < fleetPlacement.GetLength(0); i++)
+            {
+                for (int j = 0; j < fleetPlacement.GetLength(1); j++)
+                {
+                    fleetPlacement[i, j] = 'U'; //u - unplaced
+                }
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                //GetXYPlacement(i);
+            }
+
+            return fleetPlacement;
+        }
+
+        private int[] GetXYPlacement(int i)
+        {
+            int[] placement = new int[2];
+            int shipPlacement = rng.Next(2); //0 horiz, 1 vert
+            if (shipPlacement == 0)
+            {
+                placement[0] = rng.Next(10 - GetShipLength(i));
+                placement[1] = rng.Next(10);
+            }
+            else
+            {
+                placement[0] = rng.Next(10);
+                placement[1] = rng.Next(10 - GetShipLength(i));
+            }
+            return placement;
+        }
+
+        private char GetShipLetter(int x)
+        {
+            char carrier = 'C';
+            char battleship = 'B';
+            char destroyer = 'D';
+            char submarine = 'S';
+            char patrolboat = 'P';
+
+            switch(x)
+            {
+                case 4:
+                    return carrier;
+                case 3:
+                    return battleship;
+                case 2:
+                    return destroyer;
+                case 1:
+                    return submarine;
+                case 0:
+                    return patrolboat;
+                default:
+                    return 'X';
+            }
+        }
+
+        private int GetShipLength(int x)
+        {
+            int carrierLength = 5;
+            int battleshipLength = 4;
+            int destroyerLength = 3;
+            int submarineLength = 3;
+            int patrolboatLength = 2;
+
+            switch (x)
+            {
+                case 4:
+                    return carrierLength;
+                case 3:
+                    return battleshipLength;
+                case 2:
+                    return destroyerLength;
+                case 1:
+                    return submarineLength;
+                case 0:
+                    return patrolboatLength;
+                default:
+                    return -1;
+            }
         }
     }
 }
