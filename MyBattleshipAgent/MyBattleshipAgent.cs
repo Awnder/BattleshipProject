@@ -11,9 +11,9 @@ namespace Battleship
         public SuperCoolAgent()
         {
             attackHistory = new char[10, 10];
-            for (int i = 0; i < attackHistory.GetLength(0); i++)
+            for(int i = 0; i < attackHistory.GetLength(0); i++)
             {
-                for (int j = 0; j < attackHistory.GetLength(1); j++)
+                for(int j = 0; j < attackHistory.GetLength(1); j++)
                 {
                     attackHistory[i, j] = 'U'; //u - unknown
                 }
@@ -51,10 +51,10 @@ namespace Battleship
 
         public override void DamageReport(char report)
         {
-            if (report == '\0')
+            if(report == '\0')
             {
                 attackHistory[attackGrid.x, attackGrid.y] = 'M';
-            } else 
+            } else
             {
                 attackHistory[attackGrid.x, attackGrid.y] = report;
             }
@@ -63,8 +63,9 @@ namespace Battleship
         public override BattleshipFleet PositionFleet()
         {
             BattleshipFleet myFleet = new BattleshipFleet();
-            char[,] fleetPlacement = CreateFleetPlacement();
-            
+
+            CreateFleetPlacement();
+
             myFleet.Carrier = new ShipPosition(0, 0, ShipRotation.Vertical);
             myFleet.Battleship = new ShipPosition(1, 0, ShipRotation.Vertical);
             myFleet.Destroyer = new ShipPosition(2, 0, ShipRotation.Vertical);
@@ -74,40 +75,85 @@ namespace Battleship
             return myFleet;
         }
 
-        private char[,] CreateFleetPlacement()
+        private void CreateFleetPlacement()
         {
- 
-            char[,] fleetPlacement = new char[10, 10];
-            for (int i = 0; i < fleetPlacement.GetLength(0); i++)
+            char[,] board = new char[10, 10];
+            for(int i = 0; i < board.GetLength(0); i++)
             {
-                for (int j = 0; j < fleetPlacement.GetLength(1); j++)
+                for(int j = 0; j < board.GetLength(1); j++)
                 {
-                    fleetPlacement[i, j] = 'U'; //u - unplaced
+                    board[i, j] = 'U'; //u - unknown
                 }
             }
+            board = SetShipPlacement(board);
 
-            for (int i = 0; i < 5; i++)
+            for(int i = 0; i < board.GetLength(0); i++)
             {
-                //GetXYPlacement(i);
+                for(int j = 0; j < board.GetLength(1); j++)
+                {
+                    Console.Write(board[i, j]);
+                }
+                Console.WriteLine();
             }
-
-            return fleetPlacement;
         }
 
-        private int[] GetXYPlacement(int i)
+        private char[,] SetShipPlacement(char[,] board, int ship = 0)
         {
-            int[] placement = new int[2];
-            int shipPlacement = rng.Next(2); //0 horiz, 1 vert
-            if (shipPlacement == 0)
+            for(int i = ship; i < 5; i++)
             {
-                placement[0] = rng.Next(10 - GetShipLength(i));
+                int[] placement = GetXYPlacement(i);
+                if(placement[2] == 0)
+                {
+                    for(int a = placement[0]; a < GetShipLength(i); a++)
+                    {
+                        for(int b = placement[1]; b < GetShipLength(i); b++)
+                        {
+                            if(board[a, b] == 'U')
+                            {
+                                board[a, b] = GetShipLetter(i);
+                            }
+                            else
+                            {
+                                SetShipPlacement(board, i);
+                            }
+                        }
+                    }
+                } else
+                {
+                    for(int a = placement[0]; a < GetShipLength(i); a++)
+                    {
+                        for(int b = placement[1]; b < GetShipLength(i); b++)
+                        {
+                            if(board[b, a] == 'U')
+                            {
+                                board[b, a] = GetShipLetter(i);
+                            } else
+                            {
+                                SetShipPlacement(board, i);
+                            }
+                        }
+                    }
+                }
+                
+            }
+            return board;
+        }
+
+        private int[] GetXYPlacement(int x)
+        {
+            int[] placement = new int[3];
+            int shipPlacement = rng.Next(2); //0 horiz, 1 vert
+            if(shipPlacement == 0)
+            {
+                placement[0] = rng.Next(10 - GetShipLength(x));
                 placement[1] = rng.Next(10);
             }
             else
             {
                 placement[0] = rng.Next(10);
-                placement[1] = rng.Next(10 - GetShipLength(i));
+                placement[1] = rng.Next(10 - GetShipLength(x));
             }
+            placement[2] = shipPlacement;
             return placement;
         }
 
