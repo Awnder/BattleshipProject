@@ -45,8 +45,16 @@ namespace Battleship
 
         public override GridSquare LaunchAttack()
         {
-            attackGrid.x = 5;
-            attackGrid.y = 5;
+            
+            //failsafe method
+            if (attackGrid.x < 0 || attackGrid.x > 9 || attackGrid.y < 0 || attackGrid.y > 9)
+            {
+                do
+                {
+                    attackGrid.x = rng.Next() % 10;
+                    attackGrid.y = rng.Next() % 10;
+                } while (attackHistory[attackGrid.x, attackGrid.y] != 'U');
+            }
             return attackGrid;
         }
 
