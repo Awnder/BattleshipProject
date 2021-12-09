@@ -46,7 +46,7 @@ namespace Battleship
         public override GridSquare LaunchAttack()
         {
             
-            //failsafe method
+            //failsafe 
             if (attackGrid.x < 0 || attackGrid.x > 9 || attackGrid.y < 0 || attackGrid.y > 9)
             {
                 do
@@ -77,11 +77,11 @@ namespace Battleship
 
             if (myFleetPlacements[4, 2] == 0)
             {
-                myFleet.Submarine = new ShipPosition(myFleetPlacements[4, 0], myFleetPlacements[4, 1], ShipRotation.Horizontal);
+                myFleet.Carrier = new ShipPosition(myFleetPlacements[4, 0], myFleetPlacements[4, 1], ShipRotation.Horizontal);
             }
             else
             {
-                myFleet.Submarine = new ShipPosition(myFleetPlacements[4, 0], myFleetPlacements[4, 1], ShipRotation.Vertical);
+                myFleet.Carrier = new ShipPosition(myFleetPlacements[4, 0], myFleetPlacements[4, 1], ShipRotation.Vertical);
             }
             if (myFleetPlacements[3, 2] == 0)
             {
