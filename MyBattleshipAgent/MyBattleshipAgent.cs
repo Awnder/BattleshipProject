@@ -56,11 +56,7 @@ namespace Battleship
         }
 
         public override GridSquare LaunchAttack()
-        {
-            //attack with previous stored of opponent
-
-            //attack ship that has been hit
-
+        {   
             //attack methods work from bottom to top -> PreviousBoard -> DiagonalOne -> DiagonalTwo -> AttackVertical ...
             //exception is FailSafe() which is a last resort to keep program from crashing
             AttackRandom();
@@ -469,21 +465,13 @@ namespace Battleship
             {
                 return;
             }
-            for (int a = y; a > 0; a--)
+            if (attackHistory[x, y - 1] == 'M')
             {
-                int counter = 0;
-                if (attackHistory[x, a] == 'M')
-                {
-                    return;
-                }
-                if (attackHistory[x, a] == 'U')
-                {
-                    SetAttack(x, a);
-                }
-                if (counter == GetShipLength(attackHistory[x, y]))
-                {
-                    return;
-                }
+                return;
+            }
+            if (attackHistory[x, y - 1] == 'U')
+            {
+                SetAttack(x, y - 1);
             }
         }
 
@@ -493,21 +481,13 @@ namespace Battleship
             {
                 return;
             }
-            for (int a = y; a < attackHistory.GetLength(1); a++)
+            if (attackHistory[x, y + 1] == 'M')
             {
-                int counter = 0;
-                if (attackHistory[x, a] == 'M')
-                {
-                    return;
-                }
-                if (attackHistory[x, a] == 'U')
-                {
-                    SetAttack(x, a);
-                }
-                if (counter == GetShipLength(attackHistory[x, y]))
-                {
-                    return;
-                }
+                return;
+            }
+            if (attackHistory[x, y + 1] == 'U')
+            {
+                SetAttack(x, y + 1);
             }
         }
 
@@ -517,21 +497,13 @@ namespace Battleship
             {
                 return;
             }
-            for (int a = x; a > 0; a--)
+            if (attackHistory[x - 1, y] == 'M')
             {
-                int counter = 0;
-                if (attackHistory[a, y] == 'M')
-                {
-                    return;
-                }
-                if (attackHistory[a, y] == 'U')
-                {
-                    SetAttack(a, y);
-                }
-                if (counter == GetShipLength(attackHistory[x, y]))
-                {
-                    return;
-                }
+                return;
+            }
+            if (attackHistory[x - 1, y] == 'U')
+            {
+                SetAttack(x - 1, y);
             }
         }
 
@@ -541,21 +513,13 @@ namespace Battleship
             {
                 return;
             }
-            for (int a = x; a < attackHistory.GetLength(0); a++)
+            if (attackHistory[x + 1, y] == 'M')
             {
-                int counter = 0;
-                if (attackHistory[a, y] == 'M')
-                {
-                    return;
-                }
-                if (attackHistory[a, y] == 'U')
-                {
-                    SetAttack(a, y);
-                }
-                if (counter == GetShipLength(attackHistory[x, y]))
-                {
-                    return;
-                }
+                return;
+            }
+            if (attackHistory[x + 1, y] == 'U')
+            {
+                SetAttack(x + 1, y);
             }
         }
 
