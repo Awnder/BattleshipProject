@@ -323,31 +323,6 @@ namespace Battleship
             }
         }
 
-        private int GetShipLength(char c)
-        {
-            int carrierLength = 5;
-            int battleshipLength = 4;
-            int destroyerLength = 3;
-            int submarineLength = 3;
-            int patrolboatLength = 2;
-
-            switch (c)
-            {
-                case 'C':
-                    return carrierLength;
-                case 'B':
-                    return battleshipLength;
-                case 'D':
-                    return destroyerLength;
-                case 'S':
-                    return submarineLength;
-                case 'P':
-                    return patrolboatLength;
-                default:
-                    return 'U';
-            }
-        }
-
         // --- METHODS TO PLACE ATTACKS ---
 
         private bool IsShip(int x, int y)
