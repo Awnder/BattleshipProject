@@ -5,18 +5,29 @@ namespace Battleship
     public class SuperCoolAgent : BattleshipAgent
     {
         char[,] attackHistory;
+        char[,] previousHistory;
         GridSquare attackGrid;
         Random rng;
 
         public SuperCoolAgent()
         {
             attackHistory = new char[10, 10];
+            previousHistory = new char[10, 10];
             attackGrid = new GridSquare();
             rng = new Random();
         }
 
         public override void Initialize()
         {
+            //make or rewrite previousHistory
+            for (int i = 0; i < previousHistory.GetLength(0); i++)
+            {
+                for (int j = 0; j < previousHistory.GetLength(1); j++)
+                {
+                    previousHistory[i, j] = attackHistory[i, j];
+                }
+            }
+
             //make or clear attackHistory
             for (int i = 0; i < attackHistory.GetLength(0); i++)
             {
@@ -25,6 +36,7 @@ namespace Battleship
                     attackHistory[i, j] = 'U'; //u - unknown
                 }
             }
+
             return;
         }
 
@@ -49,16 +61,14 @@ namespace Battleship
 
             //attack ship that has been hit
 
+            //attack methods work from bottom to top -> DiagonalOne -> DiagonalTwo -> AttackVertical ...
+            //exception is FailSafe() which is a last resort to keep program from crashing
             AttackRandom();
             AttackVertical();
             AttackDiagonalTwo();
             AttackDiagonalOne();
             
             AttackFailSafe();
-
-            //attack vertical
-            //attack horizontal
-            //attack random
 
             return attackGrid;
         }
@@ -78,7 +88,7 @@ namespace Battleship
         {
             BattleshipFleet myFleet = new BattleshipFleet();
 
-            int[,] myFleetPlacements = CreateFleetPlacement(); //patrolboat, sub, destroyer, battleship, carrier
+            int[,] myFleetPlacements = CreateFleetPlacement(); //order: patrolboat, sub, destroyer, battleship, carrier
 
             if (myFleetPlacements[4, 2] == 0)
             {
@@ -314,10 +324,57 @@ namespace Battleship
                     return 1;
             }
         }
-        
+
+        private int GetShipLength(char c)
+        {
+            int carrierLength = 5;
+            int battleshipLength = 4;
+            int destroyerLength = 3;
+            int submarineLength = 3;
+            int patrolboatLength = 2;
+
+            switch (c)
+            {
+                case 'C':
+                    return carrierLength;
+                case 'B':
+                    return battleshipLength;
+                case 'D':
+                    return destroyerLength;
+                case 'S':
+                    return submarineLength;
+                case 'P':
+                    return patrolboatLength;
+                default:
+                    return 'U';
+            }
+        }
+
+        // --- METHODS TO PLACE ATTACKS ---
+
         private bool IsShip(int x, int y)
         {
             if (attackHistory[x, y] == 'C' || attackHistory[x, y] == 'B' || attackHistory[x, y] == 'D' || attackHistory[x, y] == 'S' || attackHistory[x, y] == 'P')
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool IsShipDestroyed(char ship)
+        {
+            int counter = 0;
+            for (int x = 0; x < attackHistory.GetLength(0); x++)
+            {
+                for (int y = 0; y < attackHistory.GetLength(1); y++)
+                {
+                    if (attackHistory[x, y] == ship)
+                    {
+                        counter++;
+                    }
+                }
+            }
+            if (GetShipLength(ship) == counter)
             {
                 return true;
             }
@@ -339,6 +396,18 @@ namespace Battleship
             {
                 attackGrid.x = x;
                 attackGrid.y = y;
+            }
+        }
+
+        private void AttackPreviousBoard()
+        {
+            for (int x = 0; x < previousHistory.GetLength(0); x++)
+            {
+                for (int y = 0; y < previousHistory.GetLength(1); y++)
+                {
+                    attackGrid.x = x;
+                    attackGrid.y = y;
+                }
             }
         }
 
@@ -367,7 +436,7 @@ namespace Battleship
             {
                 for (int y = 0; y < attackHistory.GetLength(1)-1; y+=2)
                 {
-                    if (x % 2 == 0)
+                    if (x % 2 == 0) //alternates starting hit on every other column so shots wont be placed in a line
                     {
                         SetAttack(x, y+1);
                     } else
@@ -389,18 +458,80 @@ namespace Battleship
             } while (!IsUnknown(x, y));
         }
 
-        private void AttackShip()
+        /*private void AttackShip()
         {
             for (int x = 0; x < attackHistory.GetLength(0); x++)
             {
                 for (int y = 0; y < attackHistory.GetLength(1); y++)
                 {
-                    if (IsShip(x, y))
+                    if (IsShip(x, y) && !IsShipDestroyed(attackHistory[x, y]))
                     {
-
+     
+                        
                     }
                 }
             }
+        }
+
+        private bool CheckUp(char ship, int x, int y)
+        {
+            if (y == 0)
+            {
+                return false;
+            }
+
+            for (int a = y; a > 0; a--)
+            {
+                int counter = 0;
+                if (ship == attackHistory[x, a])
+                {
+                    
+                }
+                if (counter == GetShipLength(attackHistory[x, y]))
+                {
+                    return false;
+                }
+            }
+            return false;
+        } */
+
+        private bool CheckDown(char ship, int x, int y)
+        {
+            if (y == 9)
+            {
+                return false;
+            }
+            if (ship == attackHistory[x, y + 1])
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool CheckLeft(char ship, int x, int y)
+        {
+            if (x == 0)
+            {
+                return false;
+            }
+            if (ship == attackHistory[x - 1, y])
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool CheckRight(char ship, int x, int y)
+        {
+            if (x == 9)
+            {
+                return false;
+            }
+            if (ship == attackHistory[x + 1, y])
+            {
+                return true;
+            }
+            return false;
         }
 
         private void AttackFailSafe()
