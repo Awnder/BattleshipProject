@@ -472,7 +472,11 @@ namespace Battleship
             for (int a = y; a > 0; a--)
             {
                 int counter = 0;
-                if (attackHistory[x, y] == attackHistory[x, a])
+                if (attackHistory[x, a] == 'M')
+                {
+                    return;
+                }
+                if (attackHistory[x, a] == 'U')
                 {
                     SetAttack(x, a);
                 }
@@ -492,7 +496,11 @@ namespace Battleship
             for (int a = y; a < attackHistory.GetLength(1); a++)
             {
                 int counter = 0;
-                if (attackHistory[x, y] == attackHistory[x, a])
+                if (attackHistory[x, a] == 'M')
+                {
+                    return;
+                }
+                if (attackHistory[x, a] == 'U')
                 {
                     SetAttack(x, a);
                 }
@@ -512,7 +520,11 @@ namespace Battleship
             for (int a = x; a > 0; a--)
             {
                 int counter = 0;
-                if (attackHistory[x, y] == attackHistory[a, y])
+                if (attackHistory[a, y] == 'M')
+                {
+                    return;
+                }
+                if (attackHistory[a, y] == 'U')
                 {
                     SetAttack(a, y);
                 }
@@ -532,7 +544,11 @@ namespace Battleship
             for (int a = x; a < attackHistory.GetLength(0); a++)
             {
                 int counter = 0;
-                if (attackHistory[x, y] == attackHistory[a, y])
+                if (attackHistory[a, y] == 'M')
+                {
+                    return;
+                }
+                if (attackHistory[a, y] == 'U')
                 {
                     SetAttack(a, y);
                 }
