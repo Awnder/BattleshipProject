@@ -67,6 +67,7 @@ namespace Battleship
             AttackVertical();
             AttackDiagonalTwo();
             AttackDiagonalOne();
+            AttackShip();
             //AttackPreviousBoard();
             
             AttackFailSafe();
@@ -362,26 +363,6 @@ namespace Battleship
             return false;
         }
 
-        private bool IsShipDestroyed(char ship)
-        {
-            int counter = 0;
-            for (int x = 0; x < attackHistory.GetLength(0); x++)
-            {
-                for (int y = 0; y < attackHistory.GetLength(1); y++)
-                {
-                    if (attackHistory[x, y] == ship)
-                    {
-                        counter++;
-                    }
-                }
-            }
-            if (GetShipLength(ship) == counter)
-            {
-                return true;
-            }
-            return false;
-        }
-
         private bool IsUnknown(int x, int y)
         {
             if (attackHistory[x, y] == 'U')
@@ -471,73 +452,95 @@ namespace Battleship
             {
                 for (int y = 0; y < attackHistory.GetLength(1); y++)
                 {
-                    if (IsShip(x, y) && !IsShipDestroyed(attackHistory[x, y]))
+                    if (IsShip(x, y))
                     {
-                             
+                        CheckUp(x, y);
+                        CheckDown(x, y);
+                        CheckLeft(x, y);
+                        CheckRight(x, y);
                     }
                 }
             }
         }
 
-        private bool CheckUp(char ship, int x, int y)
+        private void CheckUp(int x, int y)
         {
             if (y == 0)
             {
-                return false;
+                return;
             }
-
             for (int a = y; a > 0; a--)
             {
                 int counter = 0;
-                if (ship == attackHistory[x, a])
+                if (attackHistory[x, y] == attackHistory[x, a])
                 {
-                    
+                    SetAttack(x, a);
                 }
                 if (counter == GetShipLength(attackHistory[x, y]))
                 {
-                    return false;
+                    return;
                 }
             }
-            return false;
         }
 
-        private bool CheckDown(char ship, int x, int y)
+        private void CheckDown(int x, int y)
         {
             if (y == 9)
             {
-                return false;
+                return;
             }
-            if (ship == attackHistory[x, y + 1])
+            for (int a = y; a < attackHistory.GetLength(1); a++)
             {
-                return true;
+                int counter = 0;
+                if (attackHistory[x, y] == attackHistory[x, a])
+                {
+                    SetAttack(x, a);
+                }
+                if (counter == GetShipLength(attackHistory[x, y]))
+                {
+                    return;
+                }
             }
-            return false;
         }
 
-        private bool CheckLeft(char ship, int x, int y)
+        private void CheckLeft(int x, int y)
         {
             if (x == 0)
             {
-                return false;
+                return;
             }
-            if (ship == attackHistory[x - 1, y])
+            for (int a = x; a > 0; a--)
             {
-                return true;
+                int counter = 0;
+                if (attackHistory[x, y] == attackHistory[a, y])
+                {
+                    SetAttack(a, y);
+                }
+                if (counter == GetShipLength(attackHistory[x, y]))
+                {
+                    return;
+                }
             }
-            return false;
         }
 
-        private bool CheckRight(char ship, int x, int y)
+        private void CheckRight(int x, int y)
         {
             if (x == 9)
             {
-                return false;
+                return;
             }
-            if (ship == attackHistory[x + 1, y])
+            for (int a = x; a < attackHistory.GetLength(0); a++)
             {
-                return true;
+                int counter = 0;
+                if (attackHistory[x, y] == attackHistory[a, y])
+                {
+                    SetAttack(a, y);
+                }
+                if (counter == GetShipLength(attackHistory[x, y]))
+                {
+                    return;
+                }
             }
-            return false;
         }
 
         private void AttackFailSafe()
