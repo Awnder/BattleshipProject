@@ -5,14 +5,14 @@ namespace Battleship
     public class SuperCoolAgent : BattleshipAgent
     {
         char[,] attackHistory;
-        char[,] previousHistory;
+        //char[,] previousHistory;
         GridSquare attackGrid;
         Random rng;
 
         public SuperCoolAgent()
         {
             attackHistory = new char[10, 10];
-            previousHistory = new char[10, 10];
+            //previousHistory = new char[10, 10];
             attackGrid = new GridSquare();
             rng = new Random();
         }
@@ -20,13 +20,13 @@ namespace Battleship
         public override void Initialize()
         {
             //make or rewrite previousHistory
-            for (int i = 0; i < previousHistory.GetLength(0); i++)
+            /*for (int i = 0; i < attackHistory.GetLength(0); i++)
             {
-                for (int j = 0; j < previousHistory.GetLength(1); j++)
+                for (int j = 0; j < attackHistory.GetLength(1); j++)
                 {
                     previousHistory[i, j] = attackHistory[i, j];
                 }
-            }
+            }*/
 
             //make or clear attackHistory
             for (int i = 0; i < attackHistory.GetLength(0); i++)
@@ -61,12 +61,13 @@ namespace Battleship
 
             //attack ship that has been hit
 
-            //attack methods work from bottom to top -> DiagonalOne -> DiagonalTwo -> AttackVertical ...
+            //attack methods work from bottom to top -> PreviousBoard -> DiagonalOne -> DiagonalTwo -> AttackVertical ...
             //exception is FailSafe() which is a last resort to keep program from crashing
             AttackRandom();
             AttackVertical();
             AttackDiagonalTwo();
             AttackDiagonalOne();
+            //AttackPreviousBoard();
             
             AttackFailSafe();
 
@@ -399,17 +400,23 @@ namespace Battleship
             }
         }
 
-        private void AttackPreviousBoard()
+        /*private void AttackPreviousBoard()
         {
             for (int x = 0; x < previousHistory.GetLength(0); x++)
             {
                 for (int y = 0; y < previousHistory.GetLength(1); y++)
                 {
-                    attackGrid.x = x;
-                    attackGrid.y = y;
+                    if (previousHistory[x, y] == '\0') //keeps from using an empty previousHistory
+                    {
+                        return;
+                    }
+                    if (previousHistory[x, y] != 'U' && previousHistory[x, y] != 'M')
+                    {
+                        SetAttack(x, y);
+                    }
                 }
             }
-        }
+        }*/
 
         private void AttackDiagonalOne()
         {
@@ -458,7 +465,7 @@ namespace Battleship
             } while (!IsUnknown(x, y));
         }
 
-        /*private void AttackShip()
+        private void AttackShip()
         {
             for (int x = 0; x < attackHistory.GetLength(0); x++)
             {
@@ -466,8 +473,7 @@ namespace Battleship
                 {
                     if (IsShip(x, y) && !IsShipDestroyed(attackHistory[x, y]))
                     {
-     
-                        
+                             
                     }
                 }
             }
@@ -493,7 +499,7 @@ namespace Battleship
                 }
             }
             return false;
-        } */
+        }
 
         private bool CheckDown(char ship, int x, int y)
         {
