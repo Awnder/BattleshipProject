@@ -57,7 +57,7 @@ namespace Battleship
 
         public override GridSquare LaunchAttack()
         {   
-            //attack methods work from bottom to top -> PreviousBoard -> DiagonalOne -> DiagonalTwo -> AttackVertical ...
+            //attack methods work from bottom to top -> PreviousBoard -> AttackShip -> DiagonalOne  ...
             //exception is FailSafe() which is a last resort to keep program from crashing
             AttackRandom();
             AttackVertical();
@@ -168,9 +168,9 @@ namespace Battleship
                     int counter = 0;
                     for (int x = placement[0]; x < placement[0] + GetShipLength(i); x++)
                     {
+                        if (x != 0)
                         if (board[x, placement[1]] == 'U')
                         {
-
                             counter++;
                         }
                         else
@@ -422,7 +422,7 @@ namespace Battleship
                 {
                     if (x % 2 == 0) //alternates starting hit on every other column so shots wont be placed in a line
                     {
-                        SetAttack(x, y+1);
+                        SetAttack(x, y + 1);
                     } else
                     {
                         SetAttack(x, y);
@@ -450,16 +450,16 @@ namespace Battleship
                 {
                     if (IsShip(x, y))
                     {
-                        CheckUp(x, y);
-                        CheckDown(x, y);
-                        CheckLeft(x, y);
-                        CheckRight(x, y);
+                        AttackCheckUp(x, y);
+                        AttackCheckDown(x, y);
+                        AttackCheckLeft(x, y);
+                        AttackCheckRight(x, y);
                     }
                 }
             }
         }
 
-        private void CheckUp(int x, int y)
+        private void AttackCheckUp(int x, int y)
         {
             if (y == 0)
             {
@@ -475,7 +475,7 @@ namespace Battleship
             }
         }
 
-        private void CheckDown(int x, int y)
+        private void AttackCheckDown(int x, int y)
         {
             if (y == 9)
             {
@@ -491,7 +491,7 @@ namespace Battleship
             }
         }
 
-        private void CheckLeft(int x, int y)
+        private void AttackCheckLeft(int x, int y)
         {
             if (x == 0)
             {
@@ -507,7 +507,7 @@ namespace Battleship
             }
         }
 
-        private void CheckRight(int x, int y)
+        private void AttackCheckRight(int x, int y)
         {
             if (x == 9)
             {
