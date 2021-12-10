@@ -11,8 +11,8 @@ namespace Battleship
             int shotDelay = 1; // milliseconds
 
             BattleshipAgent myBattleshipAgent = new SuperCoolAgent();
-            //BattleshipAgent myTestingOpponent = new HumanPlayer();
-            BattleshipAgent myTestingOpponent = new BozoTheClown();
+            BattleshipAgent myTestingOpponent = new HumanPlayer();
+            //BattleshipAgent myTestingOpponent = new BozoTheClown();
             //BattleshipAgent myTestingOpponent = new LarryTheLine();
 
             BattleshipEngine gameEngine = new BattleshipEngine(myBattleshipAgent, myTestingOpponent);

@@ -45,16 +45,21 @@ namespace Battleship
 
         public override GridSquare LaunchAttack()
         {
+            //attack with previous stored of opponent
+
+            //attack ship that has been hit
+
+            AttackRandom();
+            AttackVertical();
+            AttackDiagonalTwo();
+            AttackDiagonalOne();
             
-            //failsafe 
-            if (attackGrid.x < 0 || attackGrid.x > 9 || attackGrid.y < 0 || attackGrid.y > 9)
-            {
-                do
-                {
-                    attackGrid.x = rng.Next() % 10;
-                    attackGrid.y = rng.Next() % 10;
-                } while (attackHistory[attackGrid.x, attackGrid.y] != 'U');
-            }
+            AttackFailSafe();
+
+            //attack vertical
+            //attack horizontal
+            //attack random
+
             return attackGrid;
         }
 
@@ -306,7 +311,106 @@ namespace Battleship
                 case 0:
                     return patrolboatLength;
                 default:
-                    return -1;
+                    return 1;
+            }
+        }
+        
+        private bool IsShip(int x, int y)
+        {
+            if (attackHistory[x, y] == 'C' || attackHistory[x, y] == 'B' || attackHistory[x, y] == 'D' || attackHistory[x, y] == 'S' || attackHistory[x, y] == 'P')
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool IsUnknown(int x, int y)
+        {
+            if (attackHistory[x, y] == 'U')
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private void SetAttack(int x, int y)
+        {
+            if (IsUnknown(x, y))
+            {
+                attackGrid.x = x;
+                attackGrid.y = y;
+            }
+        }
+
+        private void AttackDiagonalOne()
+        {
+            for (int d = 0; d < attackHistory.GetLength(0); d++)
+            {
+                SetAttack(d, d);
+            }
+        }
+
+        private void AttackDiagonalTwo()
+        {
+            int y = attackHistory.GetLength(0) - 1;
+            for (int x = 0; x < attackHistory.GetLength(0); x++)
+            {
+
+                SetAttack(x, y);
+                y--;
+            }
+        }
+
+        private void AttackVertical()
+        {
+            for (int x = 0; x < attackHistory.GetLength(0); x++)
+            {
+                for (int y = 0; y < attackHistory.GetLength(1)-1; y+=2)
+                {
+                    if (x % 2 == 0)
+                    {
+                        SetAttack(x, y+1);
+                    } else
+                    {
+                        SetAttack(x, y);
+                    }
+                }
+            }
+        }
+
+        private void AttackRandom()
+        {
+            int x, y;
+            do
+            {
+                x = rng.Next() % 10;
+                y = rng.Next() % 10;
+                SetAttack(x, y);
+            } while (!IsUnknown(x, y));
+        }
+
+        private void AttackShip()
+        {
+            for (int x = 0; x < attackHistory.GetLength(0); x++)
+            {
+                for (int y = 0; y < attackHistory.GetLength(1); y++)
+                {
+                    if (IsShip(x, y))
+                    {
+
+                    }
+                }
+            }
+        }
+
+        private void AttackFailSafe()
+        {
+            if (attackGrid.x < 0 || attackGrid.x > 9 || attackGrid.y < 0 || attackGrid.y > 9)
+            {
+                do
+                {
+                    SetAttack(rng.Next() % 10, rng.Next() % 10);
+                } while (attackHistory[attackGrid.x, attackGrid.y] != 'U');
             }
         }
     }
