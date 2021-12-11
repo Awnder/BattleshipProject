@@ -7,13 +7,13 @@ namespace Battleship
         static void Main(string[] args)
         {
             int numberOfRounds = 15;
-            int roundDelay = 500; // milliseconds
-            int shotDelay = 29; // milliseconds
+            int roundDelay = 800; // milliseconds
+            int shotDelay = 1; // milliseconds
 
             BattleshipAgent myBattleshipAgent = new SuperCoolAgent();
             //BattleshipAgent myTestingOpponent = new HumanPlayer();
-            BattleshipAgent myTestingOpponent = new BozoTheClown();
-            //BattleshipAgent myTestingOpponent = new LarryTheLine();
+            //BattleshipAgent myTestingOpponent = new BozoTheClown();
+            BattleshipAgent myTestingOpponent = new LarryTheLine();
 
             BattleshipEngine gameEngine = new BattleshipEngine(myBattleshipAgent, myTestingOpponent);
             for (int i = 0; i < numberOfRounds; i++)
