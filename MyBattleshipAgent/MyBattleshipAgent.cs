@@ -192,7 +192,6 @@ namespace Battleship
                     int counter = 0;
                     for (int x = placement[0]; x < placement[0] + GetShipLength(i); x++)
                     {
-                        if (x != 0)
                         if (board[x, placement[1]] == 'U')
                         {
                             counter++;
