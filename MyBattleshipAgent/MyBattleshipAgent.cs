@@ -87,45 +87,69 @@ namespace Battleship
             BattleshipFleet myFleet = new BattleshipFleet();
 
             int[,] myFleetPlacements = CreateFleetPlacement(); //order: patrolboat, sub, destroyer, battleship, carrier
+            bool safe = true;
 
-            if (myFleetPlacements[4, 2] == 0)
+            //failsafe placements
+            for (int x = 0; x < myFleetPlacements.GetLength(0); x++)
             {
-                myFleet.Carrier = new ShipPosition(myFleetPlacements[4, 0], myFleetPlacements[4, 1], ShipRotation.Horizontal);
+                for (int y = 0; y < myFleetPlacements.GetLength(1) - 1; y++)
+                {
+                    if (myFleetPlacements[x, y] < 0 || myFleetPlacements[x, y] > 9)
+                    {
+                        safe = false;
+                    }
+                }
             }
-            else
+
+            if (safe == true)
             {
-                myFleet.Carrier = new ShipPosition(myFleetPlacements[4, 0], myFleetPlacements[4, 1], ShipRotation.Vertical);
-            }
-            if (myFleetPlacements[3, 2] == 0)
-            {
-                myFleet.Battleship = new ShipPosition(myFleetPlacements[3, 0], myFleetPlacements[3, 1], ShipRotation.Horizontal);
-            }
-            else
-            {
-                myFleet.Battleship = new ShipPosition(myFleetPlacements[3, 0], myFleetPlacements[3, 1], ShipRotation.Vertical);
-            }
-            if (myFleetPlacements[2, 2] == 0)
-            {
-                myFleet.Destroyer = new ShipPosition(myFleetPlacements[2, 0], myFleetPlacements[2, 1], ShipRotation.Horizontal);
-            }
-            else
-            {
-                myFleet.Destroyer = new ShipPosition(myFleetPlacements[2, 0], myFleetPlacements[2, 1], ShipRotation.Vertical);
-            }
-            if (myFleetPlacements[1, 2] == 0)
-            {
-                myFleet.Submarine = new ShipPosition(myFleetPlacements[1, 0], myFleetPlacements[1, 1], ShipRotation.Horizontal);
-            }
-            else
-            {
-                myFleet.Submarine = new ShipPosition(myFleetPlacements[1, 0], myFleetPlacements[1, 1], ShipRotation.Vertical);
-            }
-            if (myFleetPlacements[0, 2] == 0)
-            {
-                myFleet.PatrolBoat = new ShipPosition(myFleetPlacements[0, 0], myFleetPlacements[0, 1], ShipRotation.Horizontal);
+                if (myFleetPlacements[4, 2] == 0)
+                {
+                    myFleet.Carrier = new ShipPosition(myFleetPlacements[4, 0], myFleetPlacements[4, 1], ShipRotation.Horizontal);
+                }
+                else
+                {
+                    myFleet.Carrier = new ShipPosition(myFleetPlacements[4, 0], myFleetPlacements[4, 1], ShipRotation.Vertical);
+                }
+                if (myFleetPlacements[3, 2] == 0)
+                {
+                    myFleet.Battleship = new ShipPosition(myFleetPlacements[3, 0], myFleetPlacements[3, 1], ShipRotation.Horizontal);
+                }
+                else
+                {
+                    myFleet.Battleship = new ShipPosition(myFleetPlacements[3, 0], myFleetPlacements[3, 1], ShipRotation.Vertical);
+                }
+                if (myFleetPlacements[2, 2] == 0)
+                {
+                    myFleet.Destroyer = new ShipPosition(myFleetPlacements[2, 0], myFleetPlacements[2, 1], ShipRotation.Horizontal);
+                }
+                else
+                {
+                    myFleet.Destroyer = new ShipPosition(myFleetPlacements[2, 0], myFleetPlacements[2, 1], ShipRotation.Vertical);
+                }
+                if (myFleetPlacements[1, 2] == 0)
+                {
+                    myFleet.Submarine = new ShipPosition(myFleetPlacements[1, 0], myFleetPlacements[1, 1], ShipRotation.Horizontal);
+                }
+                else
+                {
+                    myFleet.Submarine = new ShipPosition(myFleetPlacements[1, 0], myFleetPlacements[1, 1], ShipRotation.Vertical);
+                }
+                if (myFleetPlacements[0, 2] == 0)
+                {
+                    myFleet.PatrolBoat = new ShipPosition(myFleetPlacements[0, 0], myFleetPlacements[0, 1], ShipRotation.Horizontal);
+                }
+                else
+                {
+                    myFleet.PatrolBoat = new ShipPosition(myFleetPlacements[0, 0], myFleetPlacements[0, 1], ShipRotation.Vertical);
+                }
             } else
             {
-                myFleet.PatrolBoat = new ShipPosition(myFleetPlacements[0, 0], myFleetPlacements[0, 1], ShipRotation.Vertical);
+                myFleet.Carrier = new ShipPosition(3, 1, ShipRotation.Horizontal);
+                myFleet.Battleship = new ShipPosition(3, 3, ShipRotation.Horizontal);
+                myFleet.Destroyer = new ShipPosition(3, 5, ShipRotation.Horizontal);
+                myFleet.Submarine = new ShipPosition(3, 7, ShipRotation.Horizontal);
+                myFleet.PatrolBoat = new ShipPosition(3, 9, ShipRotation.Horizontal);
             }
 
             return myFleet;
