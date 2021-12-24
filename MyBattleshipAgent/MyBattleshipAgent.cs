@@ -62,11 +62,13 @@ namespace Battleship
             //attack methods work from bottom to top -> PreviousBoard -> AttackShip -> DiagonalOne  ...
             //exception is FailSafe which is a last resort to keep program from crashing
             AttackRandom();
-            AttackVertical();
-            AttackDiagonalTwo();
-            AttackDiagonalOne();
-            AttackShip();
-            AttackPreviousBoard();
+            //AttackVertical();
+            //AttackRandomWithSpaces();
+            //AttackPerimeter();
+            //AttackDiagonalTwo();
+            //AttackDiagonalOne();
+            //AttackShip();
+            //AttackPreviousBoard();
             
             AttackFailSafe();
 
@@ -435,6 +437,56 @@ namespace Battleship
                 }
             }
         }
+
+        private void AttackPerimeter()
+        {
+            for (int x = 0; x < attackHistory.GetLength(0); x++)
+            {
+                if (x % 2 == 0)
+                {
+                    SetAttack(x, 0);
+                }
+            }
+            for (int x = 0; x < attackHistory.GetLength(0); x++)
+            {
+                if (x % 2 == 0)
+                {
+                    SetAttack(x, 9);
+                }
+            }
+            for (int y = 0; y < attackHistory.GetLength(1); y++)
+            {
+                if (y % 2 == 0)
+                {
+                    SetAttack(0, y);
+                }
+            }
+            for (int y = 0; y < attackHistory.GetLength(1); y++)
+            {
+                if (y % 2 == 0)
+                {
+                    SetAttack(9, y);
+                }
+            }
+        }
+
+        /*
+        private void AttackRandomWithSpaces()
+        {
+            int x, y;
+            do
+            {
+                x = rng.Next() % 10;
+                y = rng.Next() % 10;
+                if (y % 2 == 0 && y != 9)
+                {
+                    SetAttack(x, y + 1);
+                } else
+                {
+                    SetAttack(x, y);
+                }
+            } while (!IsUnknown(x, y));
+        } */
 
         private void AttackRandom()
         {
