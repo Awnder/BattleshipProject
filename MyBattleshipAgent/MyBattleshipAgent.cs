@@ -63,11 +63,11 @@ namespace Battleship
             //exception is FailSafe which is a last resort to keep program from crashing
             //AttackRandom();
             //AttackVertical();
-            AttackRandomWithSpaces();
+            AttackRandomAlternate();
             //AttackPerimeter();
             //AttackDiagonalTwo();
             //AttackDiagonalOne();
-            //AttackShip();
+            AttackShip();
             //AttackPreviousBoard();
             
             AttackFailSafe();
