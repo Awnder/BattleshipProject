@@ -61,9 +61,9 @@ namespace Battleship
         {   
             //attack methods work from bottom to top -> PreviousBoard -> AttackShip -> DiagonalOne  ...
             //exception is FailSafe which is a last resort to keep program from crashing
-            AttackRandom();
+            //AttackRandom();
             //AttackVertical();
-            //AttackRandomWithSpaces();
+            AttackRandomWithSpaces();
             //AttackPerimeter();
             //AttackDiagonalTwo();
             //AttackDiagonalOne();
@@ -470,23 +470,27 @@ namespace Battleship
             }
         }
 
-        /*
-        private void AttackRandomWithSpaces()
+        
+        private void AttackRandomAlternate()
         {
+            int[] evens = { 0, 2, 4, 6, 8 };
+            int[] odds = { 1, 3, 5, 7, 9 };
             int x, y;
             do
             {
                 x = rng.Next() % 10;
-                y = rng.Next() % 10;
-                if (y % 2 == 0 && y != 9)
+                if (x % 2 == 0)
                 {
-                    SetAttack(x, y + 1);
-                } else
-                {
-                    SetAttack(x, y);
+                    y = evens[rng.Next(0, evens.Length)];
                 }
+                else
+                {
+                    y = odds[rng.Next(0, odds.Length)];
+                }
+                SetAttack(x, y);
             } while (!IsUnknown(x, y));
-        } */
+            
+        }
 
         private void AttackRandom()
         {
