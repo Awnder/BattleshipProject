@@ -58,16 +58,17 @@ namespace Battleship
         }
 
         public override GridSquare LaunchAttack()
-        {   
+        {
             //attack methods work from bottom to top -> PreviousBoard -> AttackShip -> DiagonalOne  ...
             //exception is FailSafe which is a last resort to keep program from crashing
             //AttackRandom();
             //AttackVertical();
-            AttackRandomAlternate();
+            //AttackRandomAlternate();
             //AttackPerimeter();
             //AttackDiagonalTwo();
             //AttackDiagonalOne();
-            AttackShip();
+            AttackSquareSpiral();
+            //AttackShip();
             //AttackPreviousBoard();
             
             AttackFailSafe();
@@ -470,7 +471,11 @@ namespace Battleship
             }
         }
 
-        
+        private void AttackSquareSpiral()
+        {
+            
+        }
+
         private void AttackRandomAlternate()
         {
             int[] evens = { 0, 2, 4, 6, 8 };
