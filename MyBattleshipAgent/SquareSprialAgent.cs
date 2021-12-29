@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Battleship
+namespace Battleship 
 {
-    public class SuperCoolAgent : BattleshipAgent
+    class SquareSpiralAgent : BattleshipAgent
     {
         char[,] attackHistory;
         char[,] previousHistory;
@@ -10,7 +12,7 @@ namespace Battleship
         Random rng;
         bool previousBoardMissed = false;
 
-        public SuperCoolAgent()
+        public SquareSpiralAgent()
         {
             attackHistory = new char[10, 10];
             previousHistory = new char[10, 10];
@@ -49,7 +51,7 @@ namespace Battleship
 
         public override string GetNickname()
         {
-            return "Andrew's Bot";
+            return "Square Spiral Agent";
         }
 
         public override void SetOpponent(string opponent)
@@ -70,7 +72,7 @@ namespace Battleship
             AttackSquareSpiral();
             //AttackShip();
             //AttackPreviousBoard();
-            
+
             AttackFailSafe();
 
             return attackGrid;
@@ -78,11 +80,12 @@ namespace Battleship
 
         public override void DamageReport(char report)
         {
-            if(report == '\0')
+            if (report == '\0')
             {
                 attackHistory[attackGrid.x, attackGrid.y] = 'M';
                 previousBoardMissed = true;
-            } else
+            }
+            else
             {
                 attackHistory[attackGrid.x, attackGrid.y] = report;
             }
@@ -149,7 +152,8 @@ namespace Battleship
                 {
                     myFleet.PatrolBoat = new ShipPosition(myFleetPlacements[0, 0], myFleetPlacements[0, 1], ShipRotation.Vertical);
                 }
-            } else
+            }
+            else
             {
                 myFleet.Carrier = new ShipPosition(3, 1, ShipRotation.Horizontal);
                 myFleet.Battleship = new ShipPosition(3, 3, ShipRotation.Horizontal);
@@ -160,7 +164,7 @@ namespace Battleship
 
             return myFleet;
         }
-        
+
         // --- METHODS TO PLACE FLEET ---
 
         private int[,] CreateFleetPlacement()
@@ -426,12 +430,13 @@ namespace Battleship
         {
             for (int x = 0; x < attackHistory.GetLength(0); x++)
             {
-                for (int y = 0; y < attackHistory.GetLength(1)-1; y+=2)
+                for (int y = 0; y < attackHistory.GetLength(1) - 1; y += 2)
                 {
                     if (x % 2 == 0) //alternates starting hit on every other column so shots wont be placed in a line
                     {
                         SetAttack(x, y + 1);
-                    } else
+                    }
+                    else
                     {
                         SetAttack(x, y);
                     }
@@ -473,7 +478,7 @@ namespace Battleship
 
         private void AttackSquareSpiral()
         {
-            
+            SetAttack(4, 4);
         }
 
         private void AttackRandomAlternate()
@@ -494,7 +499,7 @@ namespace Battleship
                 }
                 SetAttack(x, y);
             } while (!IsUnknown(x, y));
-            
+
         }
 
         private void AttackRandom()
