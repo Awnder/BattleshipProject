@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Battleship 
+namespace Battleship
 {
-    public class SquareSpiralAgent : BattleshipAgent
+    public class RandomSpacedAgent : BattleshipAgent
     {
         char[,] attackHistory;
         GridSquare attackGrid;
         Random rng;
 
-        public SquareSpiralAgent()
+        public RandomSpacedAgent()
         {
             attackHistory = new char[10, 10];
             attackGrid = new GridSquare();
@@ -27,7 +27,6 @@ namespace Battleship
                     attackHistory[i, j] = 'U'; //u - unknown
                 }
             }
-
             return;
         }
 
@@ -38,7 +37,7 @@ namespace Battleship
 
         public override string GetNickname()
         {
-            return "Square Spiral Agent";
+            return "Random Spaced Agent";
         }
 
         public override void SetOpponent(string opponent)
@@ -48,8 +47,8 @@ namespace Battleship
 
         public override GridSquare LaunchAttack()
         {
-            AttackSquareSpiral();
-            //AttackShip();
+            AttackRandomAlternate();
+            AttackShip();
 
             AttackFailSafe();
 
@@ -362,9 +361,24 @@ namespace Battleship
             }
         }
 
-        private void AttackSquareSpiral()
+        private void AttackRandomAlternate()
         {
-            SetAttack(4, 4);
+            int[] evens = { 0, 2, 4, 6, 8 };
+            int[] odds = { 1, 3, 5, 7, 9 };
+            int x, y;
+            do
+            {
+                x = rng.Next() % 10;
+                if (x % 2 == 0)
+                {
+                    y = evens[rng.Next(0, evens.Length)];
+                }
+                else
+                {
+                    y = odds[rng.Next(0, odds.Length)];
+                }
+                SetAttack(x, y);
+            } while (!IsUnknown(x, y));
         }
 
         private void AttackShip()

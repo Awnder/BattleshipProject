@@ -2,19 +2,21 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Battleship 
+namespace Battleship
 {
-    public class SquareSpiralAgent : BattleshipAgent
+    public class VerticalAgent : BattleshipAgent
     {
         char[,] attackHistory;
         GridSquare attackGrid;
         Random rng;
+        bool direction; //true = right, false = left
 
-        public SquareSpiralAgent()
+        public VerticalAgent()
         {
             attackHistory = new char[10, 10];
             attackGrid = new GridSquare();
             rng = new Random();
+            direction = true;
         }
 
         public override void Initialize()
@@ -27,7 +29,6 @@ namespace Battleship
                     attackHistory[i, j] = 'U'; //u - unknown
                 }
             }
-
             return;
         }
 
@@ -38,7 +39,7 @@ namespace Battleship
 
         public override string GetNickname()
         {
-            return "Square Spiral Agent";
+            return "Vertical Agent";
         }
 
         public override void SetOpponent(string opponent)
@@ -48,7 +49,7 @@ namespace Battleship
 
         public override GridSquare LaunchAttack()
         {
-            AttackSquareSpiral();
+            AttackVertical();
             //AttackShip();
 
             AttackFailSafe();
@@ -362,9 +363,67 @@ namespace Battleship
             }
         }
 
-        private void AttackSquareSpiral()
+        private void AttackVertical()
         {
-            SetAttack(4, 4);
+            
+            for (int i = 0; i < attackHistory.GetLength(0); i++)
+            {
+                int x = 0;
+                if (direction)
+                {
+                    x = x + attackHistory.GetLength(0) - 1 - i;
+                }
+                for (int y = 0; y < attackHistory.GetLength(1) - 1; y += 2)
+                {
+                    if (x % 2 == 0)
+                    {
+                        SetAttack(x, y + 1);
+                    }
+                    else
+                    {
+                        SetAttack(x, y);
+                    }
+                }
+                if (direction)
+                {
+                    direction = false;
+                }
+                else
+                {
+                    direction = true;
+                }
+            }
+            
+            /*
+            int middle = attackHistory.GetLength(0)/2; //the middle of the board
+            int x = 0;
+
+            for (int i = 0; i < attackHistory.GetLength(0); i++)
+            {
+                if (direction)
+                {
+                    x = middle - i/2;
+                    direction = false;
+                } else
+                {
+                    x = middle + i/2;
+                    direction = true;
+                }
+                for (int y = 0; y < attackHistory.GetLength(1) - 1; y += 2)
+                {
+                    if (x % 2 == 0)
+                    {
+                        SetAttack(x, y + 1);
+                    }
+                    else
+                    {
+                        SetAttack(x, y);
+                    }
+                }
+            }
+            */
+
+            
         }
 
         private void AttackShip()

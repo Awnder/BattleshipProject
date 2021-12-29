@@ -470,11 +470,6 @@ namespace Battleship
             }
         }
 
-        private void AttackSquareSpiral()
-        {
-            SetAttack(4, 4);
-        }
-
         private void AttackRandomAlternate()
         {
             int[] evens = { 0, 2, 4, 6, 8 };
@@ -493,7 +488,6 @@ namespace Battleship
                 }
                 SetAttack(x, y);
             } while (!IsUnknown(x, y));
-            
         }
 
         private void AttackRandom()
