@@ -371,11 +371,11 @@ namespace Battleship
                 int x = 0;
                 if (!direction)
                 {
-                    x = x + attackHistory.GetLength(0) - 1 - i/2; //attack right-of-middle columns
+                    x = x + attackHistory.GetLength(0) - 1 - i/2; //attack left-of-middle columns
                 }
                 else
                 {
-                    x = i/2; //attack left-of-middle columns
+                    x = i/2; //attack right-of-middle columns
                 }
                 //set y
                 for (int y = 0; y < attackHistory.GetLength(1) - 1; y += 2)

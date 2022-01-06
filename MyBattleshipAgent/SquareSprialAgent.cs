@@ -9,12 +9,18 @@ namespace Battleship
         char[,] attackHistory;
         GridSquare attackGrid;
         Random rng;
+        bool right; //true = right, false = left
+        bool up; //true = up, false = down
+        int countOfSpaces; //records how many spaces attack should go
 
         public SquareSpiralAgent()
         {
             attackHistory = new char[10, 10];
             attackGrid = new GridSquare();
             rng = new Random();
+            right = false;
+            up = false;
+            countOfSpaces = 0;
         }
 
         public override void Initialize()
@@ -362,11 +368,41 @@ namespace Battleship
             }
         }
 
-        private void AttackSquareSpiral()
+        private void AttackInit()
         {
             SetAttack(4, 4);
         }
-
+        
+        private void AttackSquareSpiral()
+        {
+            int middle = attackHistory.GetLength(0) / 2;
+            for (int i = 0; i < attackHistory.GetLength(0); i++)
+            {
+                //set x
+                int x = 0;
+                if (right)
+                {
+                    x = x + attackHistory.GetLength(0) - 1 - i / 2; //attack left-of-middle columns
+                }
+                else
+                {
+                    x = i / 2; //attack right-of-middle columns
+                }
+                //set y
+                for (int y = 0; y < attackHistory.GetLength(1) - 1; y += 2)
+                {
+                    if (x % 2 == 0)
+                    {
+                        SetAttack(x, y + 1);
+                    }
+                    else
+                    {
+                        SetAttack(x, y);
+                    }
+                }
+            }
+        }
+    
         private void AttackShip()
         {
             for (int x = 0; x < attackHistory.GetLength(0); x++)
