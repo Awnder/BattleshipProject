@@ -50,7 +50,7 @@ namespace Battleship
         public override GridSquare LaunchAttack()
         {
             AttackVertical();
-            //AttackShip();
+            AttackShip();
 
             AttackFailSafe();
 
@@ -365,14 +365,19 @@ namespace Battleship
 
         private void AttackVertical()
         {
-            
             for (int i = 0; i < attackHistory.GetLength(0); i++)
             {
+                //set x
                 int x = 0;
-                if (direction)
+                if (!direction)
                 {
-                    x = x + attackHistory.GetLength(0) - 1 - i;
+                    x = x + attackHistory.GetLength(0) - 1 - i/2; //attack right-of-middle columns
                 }
+                else
+                {
+                    x = i/2; //attack left-of-middle columns
+                }
+                //set y
                 for (int y = 0; y < attackHistory.GetLength(1) - 1; y += 2)
                 {
                     if (x % 2 == 0)
@@ -393,37 +398,6 @@ namespace Battleship
                     direction = true;
                 }
             }
-            
-            /*
-            int middle = attackHistory.GetLength(0)/2; //the middle of the board
-            int x = 0;
-
-            for (int i = 0; i < attackHistory.GetLength(0); i++)
-            {
-                if (direction)
-                {
-                    x = middle - i/2;
-                    direction = false;
-                } else
-                {
-                    x = middle + i/2;
-                    direction = true;
-                }
-                for (int y = 0; y < attackHistory.GetLength(1) - 1; y += 2)
-                {
-                    if (x % 2 == 0)
-                    {
-                        SetAttack(x, y + 1);
-                    }
-                    else
-                    {
-                        SetAttack(x, y);
-                    }
-                }
-            }
-            */
-
-            
         }
 
         private void AttackShip()
