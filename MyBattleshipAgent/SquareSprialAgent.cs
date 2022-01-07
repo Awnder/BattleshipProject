@@ -389,18 +389,17 @@ namespace Battleship
                     x = i / 2; //attack right-of-middle columns
                 }
                 //set y
-                for (int y = 0; y < attackHistory.GetLength(1) - 1; y += 2)
+                int y = 0;
+                if (up)
                 {
-                    if (x % 2 == 0)
-                    {
-                        SetAttack(x, y + 1);
-                    }
-                    else
-                    {
-                        SetAttack(x, y);
-                    }
+                    y = i / 2;
+                } else
+                {
+                    y = y + attackHistory.GetLength(0) - 1 - i / 2;
                 }
+                SetAttack(x, y);
             }
+
         }
     
         private void AttackShip()
