@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace Battleship 
 {
@@ -9,18 +11,16 @@ namespace Battleship
         char[,] attackHistory;
         GridSquare attackGrid;
         Random rng;
-        bool right; //true = right, false = left
-        bool up; //true = up, false = down
-        int countOfSpaces; //records how many spaces attack should go
+        int direction; //0-3: down, right, up, left
+        int[] recordedSpace;
 
         public SquareSpiralAgent()
         {
             attackHistory = new char[10, 10];
             attackGrid = new GridSquare();
             rng = new Random();
-            right = false;
-            up = false;
-            countOfSpaces = 0;
+            direction = 0;
+            recordedSpace = new int[2];
         }
 
         public override void Initialize()
@@ -368,38 +368,46 @@ namespace Battleship
             }
         }
 
+        private void RecordSpace(int x, int y)
+        {
+            recordedSpace[0] = x;
+            recordedSpace[1] = y;
+        }
+
         private void AttackInit()
         {
             SetAttack(4, 4);
+            RecordSpace(4, 4);
         }
         
         private void AttackSquareSpiral()
         {
-            int middle = attackHistory.GetLength(0) / 2;
-            for (int i = 0; i < attackHistory.GetLength(0); i++)
+            if (direction == 0)
             {
-                //set x
-                int x = 0;
-                if (right)
+                for (int y = recordedSpace[1]; y < recordedSpace[1] + GetSpace(); y++)
                 {
-                    x = x + attackHistory.GetLength(0) - 1 - i / 2; //attack left-of-middle columns
+                    SetAttack(recordedSpace[0], y);
                 }
-                else
-                {
-                    x = i / 2; //attack right-of-middle columns
-                }
-                //set y
-                int y = 0;
-                if (up)
-                {
-                    y = i / 2;
-                } else
-                {
-                    y = y + attackHistory.GetLength(0) - 1 - i / 2;
-                }
-                SetAttack(x, y);
+            } else
+            {
+
             }
 
+        }
+
+        private int GetSpace()
+        {
+            int[] array = ConvertSpaceToInt().ToArray();
+            return array[array.Length-1];
+        }
+
+        private IEnumerable<int> ConvertSpaceToInt()
+        {
+            List<int> spaces = new List<int> { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 9 };
+            for (int i = 0; i < spaces.Count; i++)
+            {
+                yield return spaces[i];
+            }
         }
     
         private void AttackShip()
