@@ -20,7 +20,9 @@ namespace Battleship
             //BattleshipAgent myTestingOpponent = new LarryTheLine();
 
             //BattleshipAgent myTestingOpponent = new BotEdgePlacement();
-            BattleshipAgent myTestingOpponent = new BotCenterPlacement();
+            //BattleshipAgent myTestingOpponent = new BotCenterPlacement();
+            BattleshipAgent myTestingOpponent = new BotRandomPlacement();
+
 
             BattleshipEngine gameEngine = new BattleshipEngine(myBattleshipAgent, myTestingOpponent);
             for (int i = 0; i < numberOfRounds; i++)
