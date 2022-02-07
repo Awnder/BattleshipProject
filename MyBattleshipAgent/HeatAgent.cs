@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace Battleship
 {
@@ -11,6 +12,10 @@ namespace Battleship
         GridSquare attackGrid;
         Random rng;
         bool previousBoardMissed = false;
+        StreamReader sr;
+        StreamWriter sw;
+        string[] heatmap;
+        string heatfilename = "HeatAgentMemory.txt";
 
         public HeatAgent()
         {
@@ -18,6 +23,9 @@ namespace Battleship
             previousHistory = new char[10, 10];
             attackGrid = new GridSquare();
             rng = new Random();
+            sr = new StreamReader(heatfilename);
+            sw = new StreamWriter(heatfilename);
+            heatmap = File.ReadAllLines(heatfilename);
         }
 
         public override void Initialize()
@@ -41,6 +49,9 @@ namespace Battleship
                 }
             }
 
+            //update heatmap
+            heatmap = File.ReadAllLines(heatfilename);
+
             return;
         }
 
@@ -63,10 +74,8 @@ namespace Battleship
         {
             //attack methods work from bottom to top -> PreviousBoard -> AttackShip -> DiagonalOne  ...
             //exception is FailSafe which is a last resort to keep program from crashing
-            AttackRandom();
             AttackRandomAlternate();
             AttackShip();
-            //AttackPreviousBoard();
 
             AttackFailSafe();
 
@@ -380,26 +389,9 @@ namespace Battleship
             }
         }
 
-        private void AttackPreviousBoard()
+        private void AttackHeat()
         {
-            if (previousBoardMissed)
-            {
-                return;
-            }
-            for (int x = 0; x < previousHistory.GetLength(0); x++)
-            {
-                for (int y = 0; y < previousHistory.GetLength(1); y++)
-                {
-                    if (previousHistory[x, y] == '\0') //keeps from using an empty previousHistory
-                    {
-                        return;
-                    }
-                    if (previousHistory[x, y] != 'U' && previousHistory[x, y] != 'M')
-                    {
-                        SetAttack(x, y);
-                    }
-                }
-            }
+            sr = 
         }
 
         private void AttackRandomAlternate()
@@ -418,17 +410,6 @@ namespace Battleship
                 {
                     y = odds[rng.Next(0, odds.Length)];
                 }
-                SetAttack(x, y);
-            } while (!IsUnknown(x, y));
-        }
-
-        private void AttackRandom()
-        {
-            int x, y;
-            do
-            {
-                x = rng.Next() % 10;
-                y = rng.Next() % 10;
                 SetAttack(x, y);
             } while (!IsUnknown(x, y));
         }
