@@ -102,9 +102,9 @@ namespace Battleship
         public override GridSquare LaunchAttack()
         {
             //attack methods work from bottom to top -> PreviousBoard -> AttackShip -> DiagonalOne  ...
-            //exception is FailSafe which is a last resort to keep program from crashing
-            AttackRandomAlternate();
-            AttackShip();
+            //AttackRandomAlternate();
+            //AttackShip();
+            AttackHeat();
 
             AttackFailSafe();
 
@@ -428,7 +428,6 @@ namespace Battleship
             }
         }
 
-        /*
         private void AttackHeat()
         {
             int largestValue = int.MinValue;
@@ -438,7 +437,7 @@ namespace Battleship
             {
                 for (int y = 0; y < heatmap.GetLength(1); y++)
                 {
-                    if (heatmap[x, y] > largestValue)
+                    if (heatmap[x, y] > largestValue && attackHistory[x, y] == 'U')
                     {
                         largestValue = heatmap[x, y];
                         xCoord = x;
@@ -448,7 +447,6 @@ namespace Battleship
             }
             SetAttack(xCoord, yCoord);
         }
-        */
 
         private void AttackRandomAlternate()
         {
