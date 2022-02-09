@@ -117,11 +117,12 @@ namespace Battleship
             {
                 attackHistory[attackGrid.x, attackGrid.y] = 'M';
                 previousBoardMissed = true;
-
+                /*
                 if (heatmap[attackGrid.x, attackGrid.y] > int.MinValue)
                 {
                     heatmapRecording[attackGrid.x, attackGrid.y] = heatmap[attackGrid.x, attackGrid.y] - 1;
                 }
+                */
             }
             else
             {
