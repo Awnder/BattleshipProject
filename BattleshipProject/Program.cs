@@ -28,7 +28,7 @@ namespace Battleship
             BattleshipEngine gameEngine = new BattleshipEngine(myBattleshipAgent, myTestingOpponent);
             for (int i = 0; i < numberOfRounds; i++)
             {
-                BattleshipAgent winner = gameEngine.PlaySingleGame(true, shotDelay);
+                string winner = gameEngine.PlaySingleGame(true, shotDelay);
                 System.Threading.Thread.Sleep(roundDelay);
             }
         }
