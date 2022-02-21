@@ -12,6 +12,7 @@ namespace Battleship
 
         public RandomSpacedAgent()
         {
+            Nickname = "Random Spaced Agent";
             attackHistory = new char[10, 10];
             attackGrid = new GridSquare();
             rng = new Random();

@@ -20,6 +20,7 @@ namespace Battleship
 
         public HeatAgent()
         {
+            Nickname = "Heat Agent";
             attackHistory = new char[10, 10];
             previousHistory = new char[10, 10];
             attackGrid = new GridSquare();

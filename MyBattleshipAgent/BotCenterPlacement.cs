@@ -11,6 +11,7 @@ namespace Battleship
 
         public BotCenterPlacement()
         {
+            Nickname = "Bot Center Placement"; 
             attackHistory = new char[10, 10];
             attackGrid = new GridSquare();
         }

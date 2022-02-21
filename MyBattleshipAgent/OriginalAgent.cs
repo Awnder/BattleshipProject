@@ -12,6 +12,7 @@ namespace Battleship
 
         public OriginalAgent()
         {
+            Nickname = "Original Agent";
             attackHistory = new char[10, 10];
             previousHistory = new char[10, 10];
             attackGrid = new GridSquare();

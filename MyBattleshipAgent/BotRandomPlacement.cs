@@ -12,6 +12,7 @@ namespace Battleship
 
         public BotRandomPlacement()
         {
+            Nickname = "Bot Random Placement";
             attackHistory = new char[10, 10];
             attackGrid = new GridSquare();
             rng = new Random();
