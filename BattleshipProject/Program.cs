@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Battleship
 {
@@ -31,6 +32,13 @@ namespace Battleship
                 string winner = gameEngine.PlaySingleGame(true, shotDelay);
                 System.Threading.Thread.Sleep(roundDelay);
             }
+
+            //testing HeatAgent
+            List<BattleshipAgent> agents = new List<BattleshipAgent>();
+
+
+            //for (int i = 0; i < )
+            //BattleshipEngine gameEngine = new BattleshipEngine();
         }
     }
 }
