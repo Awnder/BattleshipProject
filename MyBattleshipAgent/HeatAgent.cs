@@ -8,10 +8,8 @@ namespace Battleship
     public class HeatAgent : BattleshipAgent
     {
         char[,] attackHistory;
-        char[,] previousHistory;
         GridSquare attackGrid;
         Random rng;
-        bool previousBoardMissed = false;
         StreamReader sr;
         StreamWriter sw;
         int[,] heatmap;
@@ -22,7 +20,6 @@ namespace Battleship
         {
             Nickname = "Heat Agent";
             attackHistory = new char[10, 10];
-            previousHistory = new char[10, 10];
             attackGrid = new GridSquare();
             rng = new Random();
             heatmap = new int[10, 10];
@@ -31,26 +28,6 @@ namespace Battleship
 
         public override void Initialize()
         {
-            sw = new StreamWriter(heatfilename);
-            for (int i = 0; i < heatmapRecording.GetLength(0); i++)
-            {
-                for (int j = 0; j < heatmapRecording.GetLength(1); j++)
-                {
-                    sw.WriteLine($"{i}:{j}:{heatmapRecording[i, j]}"); //x, y, amount
-                }
-            }
-            sw.Close();
-
-            previousBoardMissed = false;
-            //make or rewrite previousHistory
-            for (int i = 0; i < attackHistory.GetLength(0); i++)
-            {
-                for (int j = 0; j < attackHistory.GetLength(1); j++)
-                {
-                    previousHistory[i, j] = attackHistory[i, j];
-                }
-            }
-
             //make or clear attackHistory
             for (int i = 0; i < attackHistory.GetLength(0); i++)
             {
@@ -74,7 +51,7 @@ namespace Battleship
             }
             sr.Close();
 
-            //copy heatmap to heatmapRecording to modify and eventually write to file
+            //copy heatmap to heatmapRecording to eventually write to file
             for (int i = 0; i < heatmap.GetLength(0); i++)
             {
                 for (int j = 0; j < heatmap.GetLength(1); j++)
@@ -82,6 +59,7 @@ namespace Battleship
                     heatmapRecording[i, j] = heatmap[i, j];
                 }
             }
+
             return;
         }
 
@@ -117,7 +95,6 @@ namespace Battleship
             if (report == '\0')
             {
                 attackHistory[attackGrid.x, attackGrid.y] = 'M';
-                previousBoardMissed = true;
                 /*
                 if (heatmap[attackGrid.x, attackGrid.y] > int.MinValue)
                 {
@@ -132,6 +109,17 @@ namespace Battleship
                 if (heatmap[attackGrid.x, attackGrid.y] < int.MaxValue)
                 {
                     heatmapRecording[attackGrid.x, attackGrid.y] = heatmap[attackGrid.x, attackGrid.y] + 1;
+
+                    //writing to file
+                    sw = new StreamWriter(heatfilename);
+                    for (int i = 0; i < heatmapRecording.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < heatmapRecording.GetLength(1); j++)
+                        {
+                            sw.WriteLine($"{i}:{j}:{heatmapRecording[i, j]}"); //x, y, amount
+                        }
+                    }
+                    sw.Close();
                 }
             }
         }
