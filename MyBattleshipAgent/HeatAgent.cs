@@ -202,6 +202,7 @@ namespace Battleship
 
         private int[,] CreateFleetPlacement()
         {
+            //test board to record ship placements
             char[,] board = new char[10, 10];
             for (int i = 0; i < board.GetLength(0); i++)
             {
@@ -216,7 +217,7 @@ namespace Battleship
             int[,] fleetPlacements = new int[5, 3]; //five ships, three items (x,y,horiz/vert)
             for (int q = 0; q < 5; q++) //for five ships
             {
-                int[] tempPlacements = GetShipPlacement(board, q);
+                int[] tempPlacements = GetShipPlacement(board, q); //reads board and returns the placements of the desired ship
                 for (int r = 0; r < 3; r++) //for three items
                 {
                     fleetPlacements[q, r] = tempPlacements[r];
@@ -225,12 +226,12 @@ namespace Battleship
             return fleetPlacements;
         }
 
-        private char[,] SetShipPlacement(char[,] board, int shipNumber = 0)
+        private char[,] SetShipPlacement(char[,] board, int shipNumber = 0) //recursively run with same board, recording which ship number on
         {
             for (int i = shipNumber; i < 5; i++)
             {
                 int[] placement = GetXYPlacement(i);
-                if (placement[2] == 0) //horizontal
+                if (placement[2] == 0) //if ship horizontal
                 {
                     int counter = 0;
                     for (int x = placement[0]; x < placement[0] + GetShipLength(i); x++)
@@ -239,21 +240,21 @@ namespace Battleship
                         {
                             counter++;
                         }
-                        else
+                        else //redo placement of ship because out of bounds or placed on a prior ship
                         {
                             board = SetShipPlacement(board, i);
                             return board;
                         }
                     }
-                    if (counter == GetShipLength(i))
+                    if (counter == GetShipLength(i)) //if entire ship is placed successfully
                     {
                         for (int x = placement[0]; x < placement[0] + GetShipLength(i); x++)
                         {
-                            board[x, placement[1]] = GetShipLetter(i);
+                            board[x, placement[1]] = GetShipLetter(i); //actually place ship, safe to do so
                         }
                     }
                 }
-                else //vertical
+                else //if ship vertical
                 {
                     int counter = 0;
                     for (int y = placement[1]; y < placement[1] + GetShipLength(i); y++)
