@@ -9,7 +9,7 @@ namespace Battleship
         {
             int numberOfRounds = 1;
             int roundDelay = 1; // milliseconds
-            int shotDelay = 15; // milliseconds
+            int shotDelay = 20; // milliseconds
 
             BattleshipAgent myBattleshipAgent = new OriginalAgent();
             //BattleshipAgent myBattleshipAgent = new RandomSpacedAgent();
@@ -22,8 +22,8 @@ namespace Battleship
             //BattleshipAgent myTestingOpponent = new LarryTheLine();
 
             //BattleshipAgent myTestingOpponent = new BotEdgePlacement();
-            //BattleshipAgent myTestingOpponent = new BotCenterPlacement();
-            BattleshipAgent myTestingOpponent = new BotRandomPlacement();
+            BattleshipAgent myTestingOpponent = new BotCenterPlacement();
+            //BattleshipAgent myTestingOpponent = new BotRandomPlacement();
             //BattleshipAgent myTestingOpponent = new SuperCoolAgent();
 
 
